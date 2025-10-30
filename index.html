@@ -25,12 +25,12 @@
         }
 
         .parallax-layer {
-            position: absolute;
+            position: fixed;
             width: 100%;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.15;
+            opacity: 0.25;
             will-change: transform;
         }
 
@@ -42,18 +42,18 @@
             background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop');
         }
 
-        /* Другий шар - посередині (15% до 55%) */
+        /* Другий шар - посередині (15% до 60%) */
         .layer-2 {
             bottom: 15vh;
-            height: 40vh;
+            height: 45vh;
             z-index: 2;
             background-image: url('https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=1200&h=800&fit=crop');
         }
 
-        /* Третій шар - позаду (45% до 100%) */
+        /* Третій шар - позаду (35% до 100%) */
         .layer-3 {
-            bottom: 45vh;
-            height: 55vh;
+            bottom: 35vh;
+            height: 65vh;
             z-index: 1;
             background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&h=800&fit=crop');
         }
@@ -122,8 +122,8 @@
         <h2>Три шари</h2>
         <p>
             Перший шар (0-25%) знаходиться найближче і рухається найшвидше.
-            Другий шар (15-55%) знаходиться посередині з середньою швидкістю.
-            Третій шар (45-100%) найдальше і рухається найповільніше.
+            Другий шар (15-60%) знаходиться посередині з середньою швидкістю.
+            Третій шар (35-100%) найдальше і рухається найповільніше.
         </p>
     </div>
 
@@ -138,35 +138,27 @@
         // Паралакс ефект при прокрутці
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
-            const parallaxContainer = document.querySelector('.parallax-container');
 
-            if (parallaxContainer) {
-                const containerTop = parallaxContainer.offsetTop;
-                const containerHeight = parallaxContainer.offsetHeight;
-                const relativeScroll = scrolled - containerTop;
+            // Різні швидкості для кожного шару
+            const layer1 = document.querySelector('.layer-1');
+            const layer2 = document.querySelector('.layer-2');
+            const layer3 = document.querySelector('.layer-3');
 
-                // Різні швидкості для кожного шару
-                const layer1 = document.querySelector('.layer-1');
-                const layer2 = document.querySelector('.layer-2');
-                const layer3 = document.querySelector('.layer-3');
+            // Перший шар - найшвидший (множник 0.6)
+            // Рухається вгору швидше за інші при скролі вниз
+            layer1.style.transform = `translateY(${scrolled * 0.6}px)`;
 
-                if (relativeScroll >= 0 && relativeScroll <= containerHeight * 2) {
-                    // Перший шар - найшвидший (множник 0.5)
-                    layer1.style.transform = `translateY(${relativeScroll * 0.5}px)`;
+            // Другий шар - середній (множник 0.4)
+            layer2.style.transform = `translateY(${scrolled * 0.4}px)`;
 
-                    // Другий шар - середній (множник 0.3)
-                    layer2.style.transform = `translateY(${relativeScroll * 0.3}px)`;
-
-                    // Третій шар - найповільніший (множник 0.15)
-                    layer3.style.transform = `translateY(${relativeScroll * 0.15}px)`;
-                }
-            }
+            // Третій шар - найповільніший (множник 0.2)
+            layer3.style.transform = `translateY(${scrolled * 0.2}px)`;
         });
 
-        // Додаткова анімація при завантаженні
+        // Плавна анімація при завантаженні
         window.addEventListener('load', () => {
-            document.querySelectorAll('.parallax-layer').forEach((layer, index) => {
-                layer.style.transition = 'transform 0.1s ease-out';
+            document.querySelectorAll('.parallax-layer').forEach((layer) => {
+                layer.style.transition = 'transform 0.05s ease-out';
             });
         });
     </script>
